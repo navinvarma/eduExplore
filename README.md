@@ -45,7 +45,7 @@ In your browser, open http://localhost:3000/ to see the app
 
 # Demo
 ## Live
-This app has been hosted at https://edu-explore.nvarma.com/ with data from sourced in 2017.
+This app has been hosted at https://edu-explore.nvarma.com/ with data sourced in 2017.
 
 ## Preview
 ### Server side search, filterable dynamic table
