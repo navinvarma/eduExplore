@@ -1,0 +1,115 @@
+html {
+  position: relative;
+  min-height: 100%;
+}
+body { 
+padding-top: 60px;  
+/* Margin bottom by footer height */
+margin-bottom: 60px;
+
+}
+input.small, select.small {width : 50% !important;}
+input.xsmall, select.xsmall {width : 28% !important;}
+input.xxsmall, select.xxsmall {width : 22% !important;}
+input.minmax, select.minmax {width : 22% !important; font-size:60% !important;}
+.orange {color:#F38630;}
+.highlight {color:black; text-decoration:bold !important}
+.highlight-white {color:white !important;}
+.btn-right {margin-top:10px;margin-right:20px;float:right;}
+th {background-color: #EBECED; color: black;}
+.btn-autoclick  {cursor:pointer;}
+select.small {display:inline-block !important;}
+caption {font-size:110%;color:black;}
+.pull-center {text-align:center;}
+.do-not-wrap {display:inline-block !important;}
+.sameline {display:inline !important;}
+.detailcell {height:75px !important;}
+.img-responsive {margin-top:-10px; margin-left:-10px;}
+.centered {
+	width:50% !important;
+	float:none;
+	margin: 0 auto;
+}
+.form-signin {
+  padding: 15px;
+  margin: 0 auto;
+}
+.form-signin .form-signin-heading,
+.form-signin .checkbox {
+  margin-bottom: 10px;
+}
+.form-signin .checkbox {
+  font-weight: normal;
+}
+.form-signin .form-control {
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="email"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+.form-signin .btn-lg{
+	margin-top:20px;
+}
+.logout {
+	margin-right:10px !important;
+	margin-top:10px !important;
+}
+.logout span {
+	color: grey;
+	margin-right:10px;
+}
+
+.filters {
+	background-color: #EBECED;
+	border-radius: 10px;
+}
+.filterHeader {
+	text-decoration: underline;
+	padding:3px;
+	margin:0px;
+}
+div.filterBody > form > div.form-group {
+	padding-left: 3px !important;
+	font-size:.95em !important;
+	margin-bottom:5px !important;
+}
+div.filterBody > div.form-group {
+	padding-left: 3px !important;
+	font-size:.95em !important;
+}
+.currentFilters{
+	width:80% !important;
+}
+.currentFilter > a {cursor: pointer; text-decoration:none;}
+.currentFilter {
+	font-size:.95em !important;
+	display:inline-block;
+}
+
+.subheader {
+	font-size:0.8em !important;
+}
+.footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  /* Set the fixed height of the footer here */
+  height: 40px;
+  background-color: #EBECED;
+  text-align:center;
+}

@@ -1,0 +1,20 @@
+db.universities.find({"webURL": /www.*/}).forEach( function (x) {
+  x.webURL = 'http://'+ x.webURL; 
+  db.universities.save(x);
+});
+db.universities.find({"adminURL": /www.*/}).forEach( function (x) {
+  x.adminURL = 'http://'+ x.adminURL; 
+  db.universities.save(x);
+});
+db.universities.find({"priceURL": /www.*/}).forEach( function (x) {
+  x.priceURL = 'http://'+ x.priceURL; 
+  db.universities.save(x);
+});
+db.universities.find({"applyURL": /www.*/}).forEach( function (x) {
+  x.applyURL = 'http://'+ x.applyURL; 
+  db.universities.save(x);
+});
+db.universities.find({"aidURL": /www.*/}).forEach( function (x) {
+  x.aidURL = 'http://'+ x.aidURL; 
+  db.universities.save(x);
+});

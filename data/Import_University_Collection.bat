@@ -1,0 +1,1 @@
+mongoimport --db study-in-usa --collection universities --type csv --headerline --drop --file C:\Users\navin\Documents\Projects\eduExplore\withoutLogin\data\list_of_univs.csv

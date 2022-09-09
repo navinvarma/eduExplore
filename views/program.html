@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="eduExploreApp">
+   <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <title>eduExplore</title>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+      <link rel="stylesheet" href="/img/custom.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular.min.js"></script>
+      <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular-route.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.0/ui-bootstrap-tpls.min.js"></script>
+      <script src="controller.js"></script>
+   </head>
+   <body>
+      <div class="container-fluid" name="container" ng-controller="eduExploreController" ng-init="getProgram()">
+         <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <a class="navbar-brand" rel="home" href="/" title="eduExplore">
+            <img class="img-responsive" src="/img/logo-sm.png">
+            </a>		
+            <div class="navbar-header pull-left">
+               <ul class="nav navbar-nav">
+                  <li class="active"><a href="/">Home</a></li>
+                  <li><a href="/universities">Universities</a></li>
+                  <li><a href="/about">About</a></li>
+               </ul>
+            </div>
+         </div>
+         <ol ng-if="!returnToSearch" class="breadcrumb">
+            <li><a href="/universities">Universities</a></li>
+            <li><a href="/university?id={{program.universityId}}" class="universityName"></a></li>
+            <li class="active">{{program.degreeTitle}}</li>
+         </ol>
+         <ol ng-if="returnToSearch" class="breadcrumb">
+            <li><a href="javascript:history.go(-1)"><span class="glyphicon glyphicon-backward"></span> Back to Search Results</a></li>
+         </ol>
+         <div class="row" ng-if="saveMessage">
+            <div class="alert alert-success">{{saveMessage}}</div>
+         </div>
+         <div class="row" ng-if="saveError">
+            <div class="alert alert-danger">{{saveError}}</div>
+         </div>
+         <div class="row-fluid">
+            <h3> Program Description </h3>
+            <div class="col-sm-6 col-md-6 col-lg-6">
+               <div class="form-group">
+                  <label for="university"> University </label>
+                  <input type="hidden" ng-model="program.universityId" name="universityId" value=""/>
+                  <input type="text" id="universityName" name="universityName" value="" class="form-control" disabled/>
+               </div>
+               <div class="form-group">
+                  <label for="collegeName"> College Name</label>
+                  <input type="text" ng-model="program.collegeName" name="collegeName" value="" class="form-control small"/>
+                  <label for="isBusinessSchool">Business School? </label>
+                  <input  type="checkbox" ng-model="program.isBusinessSchool" name="isBusinessSchool" ng-value-true="Yes" ng-value-false="No"/>
+               </div>
+               <div class="form-group">
+                  <label for="degreeTitle"> Degree Title </label>
+                  <input  type="text" ng-model="program.degreeTitle" name="degreeTitle" value="" class="form-control"/>
+               </div>
+               <div class="form-group">
+                  <label for="lenghInMonths"> Length (months) </label>
+                  <input  type="text" ng-model="program.lenghInMonths" name="lenghInMonths" value="" class="form-control xxsmall"/>
+               </div>
+               <div class="form-group">
+                  <label for="greAccepted"> GRE Accepted </label>
+                  <input  type="checkbox" ng-model="program.greAccepted" name="greAccepted" ng-value-true="Yes" ng-value-false="No"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                  <label for="gmatAccepted"> GMAT Accepted </label>
+                  <input  type="checkbox" ng-model="program.gmatAccepted" name="gmatAccepted" ng-value-true="Yes" ng-value-false="No"/>&nbsp;&nbsp;&nbsp;&nbsp;
+                  <label for="toeflNeeded"> TOFEL Needed </label>
+                  <input  type="checkbox" ng-model="program.toeflNeeded" name="toeflNeeded" ng-value-true="Yes" ng-value-false="No"/>
+                  <label for="courseEvalReq"> Course Evaluation Required </label>
+                  <input  type="checkbox" ng-model="program.courseEvalReq" name="courseEvalReq" ng-value-true="Yes" ng-value-false="No"/>
+               </div>
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-6">
+               <div class="form-group">
+                  <label for="descriptionURL"> Description URL <a ng-if="program.descriptionURL" href="http://{{program.descriptionURL}}" target="_blank" class="glyphicon glyphicon-link"><span></a></label>
+                  <input  type="text" ng-model="program.descriptionURL" name="descriptionURL" value="" size="50" class="form-control"/>
+               </div>
+               <div class="form-group">
+                  <label for="curriculumURL"> Curriculum URL <a ng-if="program.curriculumURL" href="http://{{program.curriculumURL}}" target="_blank" class="glyphicon glyphicon-link"><span></a></label>
+                  <input  type="text" ng-model="program.curriculumURL" name="curriculumURL" value="" size="50" class="form-control"/>
+               </div>
+               <div class="form-group">
+                  <label for="admissionRequirementsURL"> Admission Requirements URL <a ng-if="program.admissionRequirementsURL" href="http://{{program.admissionRequirementsURL}}" target="_blank" class="glyphicon glyphicon-link"><span></a></label>
+                  <input  type="text" ng-model="program.admissionRequirementsURL" name="admissionRequirementsURL" value="" size="50" class="form-control"/>
+               </div>
+               <div class="form-group">
+                  <label for="applicationURL"> Application URL <a ng-if="program.applicationURL" href="http://{{program.applicationURL}}" target="_blank" class="glyphicon glyphicon-link"><span></a></label>
+                  <input  type="text" ng-model="program.applicationURL" name="applicationURL" value="" size="50" class="form-control"/>
+               </div>
+               <div class="form-group">
+                  <label for="i20StudentURL"> International Students URL <a ng-if="program.i20StudentURL" href="http://{{program.i20StudentURL}}" target="_blank" class="glyphicon glyphicon-link"><span></a></label>
+                  <input  type="text" ng-model="program.i20StudentURL" name="i20StudentURL" value="" class="form-control"/>
+               </div>
+            </div>
+         </div>
+         <div class="row-fluid">
+            <div class="col-sm-12 col-md-12 col-lg-12">
+               <hr>
+               <h3>Program Details
+                  <button class="btn btn-sm btn-primary" ng-click="programDetailsDialog()">
+                  <span class="glyphicon glyphicon-plus"></span>Add
+                  </button>
+               </h3>
+            </div>
+         </div>
+         <div class="row-fluid">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+               <div id="listProgramDetails">
+                  <table class="table table-bordered" ng-if="programdetailsList.length > 0">
+                     <tr>
+                        <th>Year</th>
+                        <th>Semester</th>
+                        <th>Fees</th>
+                        <th>Aid</th>
+                        <th>Living ($)</th>
+                        <th colspan="5" class="text-center">Min. Profile</th>
+                        <th colspan="5" class="text-center">Avg. Class Profile</th>
+                        <th>Action</th>
+                     </tr>
+                     <tr>
+                        <th colspan="5">
+                        <th class="subheader">GPA</th>
+                        <th class="subheader">WorkEx</th>
+                        <th class="subheader">GMAT</th>
+                        <th class="subheader">GRE</th>
+                        <th class="subheader">TOEFL</th>
+                        <th class="subheader">GPA</th>
+                        <th class="subheader">WorkEx</th>
+                        <th class="subheader">GMAT</th>
+                        <th class="subheader">GRE</th>
+                        <th class="subheader">TOEFL</th>
+                        <th></th>
+                     </tr>
+                     <tr ng-repeat="programdetailsItem in programdetailsList">
+                        <td>{{programdetailsItem.year}}</td>
+                        <td>{{programdetailsItem.semester}}</td>
+                        <td>
+                           Tuition: <span class="orange" ng-if="programdetailsItem.tuitionFee">${{programdetailsItem.minTerms * programdetailsItem.tuitionFee}}</span> <br/>
+                           Application: <span class="orange" ng-if="programdetailsItem.applicationFee">${{programdetailsItem.applicationFee}}</span> <br/>
+                           <a ng-if="programdetailsItem.tuitionURL" href="{{programdetailsItem.tuitionURL}}">More Info</a> 
+                        </td>
+                        <td><span ng-if="programdetailsItem.providesAid" class="glyphicon glyphicon-ok" aria-hidden="true"></span></td>
+                        <td>
+                           <span class="orange" ng-if="programdetailsItem.costOfLiving">${{programdetailsItem.costOfLiving}}</span> <br/> 
+                           <a ng-if="programdetailsItem.costOfLivingURL" href="{{programdetailsItem.costOfLivingURL}}">More Info</a>
+                        </td>
+                        <td><span class="orange">{{programdetailsItem.minGPA}}</span></td>
+                        <td><span class="orange">{{programdetailsItem.minWorkEx}}</span></td>
+                        <td><span class="orange">{{programdetailsItem.minGMATScore}}</span></td>
+                        <td><span class="orange">{{programdetailsItem.minGREScore}}</span></td>
+                        <td><span class="orange">{{programdetailsItem.minTOEFLScore}}</span></td>
+                        <td><span class="orange">{{programdetailsItem.avgGPA}}</span></td>
+                        <td><span class="orange">{{programdetailsItem.avgWorkEx}}</span></td>
+                        <td><span class="orange">{{programdetailsItem.avgGMATScore}}</span></td>
+                        <td><span class="orange">{{programdetailsItem.avgGREScore}}</span></td>
+                        <td><span class="orange">{{programdetailsItem.avgTOEFLScore}}</span></td>
+                        <td>		   
+                           <button class="btn btn-sm btn-primary" ng-click="editProgramDetails($index)"><span class="glyphicon glyphicon-pencil" aria-hidden="true" title="Edit Program Details"></span></button>
+                           <button class="btn btn-sm btn-primary" ng-click="deleteProgramDetails($index)"><span class="glyphicon glyphicon-remove" aria-hidden="true" title="Delete Program Details"></span></button>
+                        </td>
+                     </tr>
+                  </table>
+               </div>
+            </div>
+         </div>
+         <div class="row-fluid">
+            <div class="col-sm-12 col-md-12 col-lg-12 text-center">
+               <div class="form-group">
+                  <label for="notes"> Notes </label>
+                  <textarea ng-model="program.notes" name="notes" value="" class="form-control"></textarea>
+               </div>
+            </div>
+         </div>
+         <div class="row-fluid">
+            <div class="btn-toolbar">
+               <button class="btn btn-primary" ng-click="saveProgram()">Save</button>
+               <button ng-if="program._id" class="btn btn-primary" ng-click="deleteProgram(program._id)">Delete</button>
+            </div>
+         </div>
+         <div id="programdetails" class="modal fade" role="dialog">
+            <div class="modal-dialog modal-lg">
+               <!-- Modal content-->
+               <div class="modal-content">
+                  <div class="modal-header">
+                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                     <h4 class="modal-title">Add Details</h4>
+                  </div>
+                  <div class="modal-body">
+                     <div class="form-group">
+                        <label for="year"> Year, Semester </label>
+                        <div class="clearfix"></div>
+                        <input type="text" ng-model="programdetails.year" name="year" value="" size="10" class="form-control xsmall do-not-wrap"/>
+                        <select ng-model="programdetails.semester" name="semester" class="form-control xsmall do-not-wrap">
+                           <option value="Spring">Spring</option>
+                           <option value="Fall">Fall</option>
+                           <option value="Summer">Summer</option>
+                        </select>
+                     </div>
+                     <div class="form-group">
+                        <label for="minTerms"> Minimum Semesters/Quarters/Terms </label>
+                        <input  type="text" ng-model="programdetails.minTerms" name="minTerms" value="" class="form-control xxsmall"/>
+                     </div>
+                     <div class="row-fluid">
+                        <h4> Fees </h4>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                           <div class="form-group">
+                              <label for="tuitionFee"> Tuition Fee ($) </label>
+                              <input  type="text" ng-model="programdetails.tuitionFee" name="tuitionFee" value="" class="form-control xxsmall"/>
+                           </div>
+                           <div class="form-group">
+                              <label for="applicationFee"> Application Fee ($)</label>
+                              <input  type="text" ng-model="programdetails.applicationFee" name="applicationFee" value="" class="form-control xxsmall"/>
+                           </div>
+                           <div class="form-group">
+                              <label for="providesAid"> Provides Aid </label>					 
+                              <input  class="do-not-wrap"type="checkbox" ng-model="programdetails.providesAid" name="providesAid" ng-value-true="Yes" ng-value-false="No"/>
+                           </div>
+                        </div>
+                        <div class="col-sm-6 col-md-6 col-lg-6">
+                           <div class="form-group">
+                              <label for="tuitionURL"> Tuition & Aid URL </label>
+                              <input  type="text" ng-model="programdetails.tuitionURL" name="tuitionURL" value="" class="form-control"/>
+                           </div>
+                           <div class="form-group">
+                              <label for="costOfLiving"> Cost of Living ($) </label>
+                              <input  type="text" ng-model="programdetails.costOfLiving" name="costOfLiving" value="" class="form-control"/>
+                           </div>
+                           <div class="form-group">
+                              <label for="costOfLivingURL"> Cost of Living URL </label>
+                              <input  type="text" ng-model="programdetails.costOfLivingURL" name="costOfLivingURL" value="" class="form-control"/>
+                           </div>
+                           <div class="form-group"></div>
+                        </div>
+                     </div>
+                     <div class="row-fluid">
+                        <h4> Profile </h4>
+                        <div class="col-sm-12 col-md-12 col-lg-12">
+                           <table class="table table-bordered">
+                              <tr>
+                                 <th colspan="5" class="text-center">Min. Profile</th>
+                                 <th colspan="6" class="text-center">Avg. Class Profile</th>
+                              </tr>
+                              <tr>
+                                 <th>GPA</th>
+                                 <th>WorkEx</th>
+                                 <th>GMAT</th>
+                                 <th>GRE</th>
+                                 <th>TOEFL</th>
+                                 <th>GPA</th>
+                                 <th>WorkEx</th>
+                                 <th>GMAT</th>
+                                 <th>GRE</th>
+                                 <th>TOEFL</th>
+                                 <th>Age</th>
+                              </tr>
+                              <tr>
+                                 <td><input  type="text" ng-model="programdetails.minGPA" name="minGPA" value="" class="form-control"/></td>
+                                 <td><input  type="text" ng-model="programdetails.minWorkEx" name="minWorkEx" value="" class="form-control"/></td>
+                                 <td><input  type="text" ng-model="programdetails.minGMATScore" name="minGMATScore" value="" class="form-control"/></td>
+                                 <td><input  type="text" ng-model="programdetails.minGREScore" name="minGREScore" value="" class="form-control"/></td>
+                                 <td><input  type="text" ng-model="programdetails.minTOEFLScore" name="minTOEFLScore" value="" class="form-control"/></td>
+                                 <td><input  type="text" ng-model="programdetails.avgGPA" name="avgGPA" value="" class="form-control"/></td>
+                                 <td><input  type="text" ng-model="programdetails.avgWorkEx" name="avgWorkEx" value="" class="form-control"/></td>
+                                 <td><input  type="text" ng-model="programdetails.avgGMATScore" name="avgGMATScore" value="" class="form-control"/></td>
+                                 <td><input  type="text" ng-model="programdetails.avgGREScore" name="avgGREScore" value="" class="form-control"/></td>
+                                 <td><input  type="text" ng-model="programdetails.avgTOEFLScore" name="avgTOEFLScore" value="" class="form-control"/></td>
+                                 <td><input  type="text" ng-model="programdetails.avgAge" name="avgAge" value="" class="form-control"/></td>
+                              </tr>
+                           </table>
+                        </div>
+                     </div>
+                     <div class="row-fluid">
+                        <div class="col-sm-12 col-md-12 col-lg-12 text-center">
+                           <div class="form-group">
+                              <label for="notes"> Notes </label>
+                              <textarea ng-model="programdetails.notes" name="notes" value="" class="form-control"></textarea>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="modal-footer">
+                        <input type="hidden" ng-model="programdetails.index" name="index" value="" class="form-control"/>
+                        <button class="btn btn-primary" ng-click="saveProgramDetails()">Save</button>
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="footer">
+           Developed by <a target="_blank" href="https://www.nvarma.com">Navin Varma</a>
+      </div>
+   </body>
+</html>

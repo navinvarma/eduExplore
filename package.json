@@ -1,0 +1,21 @@
+{
+    "name": "edu-explore",
+    "version": "1.0.0",
+    "description": "A simple app to help collect information on graduate school programs in the USA.",
+    "author": "Navin Varma <navinvarma@gmail.com>",
+    "keywords": [
+        "masters",
+        "gradschool",
+        "datascience",
+        "bigdata"
+    ],
+    "dependencies": {
+        "body-parser": "^1.19.0",
+        "express": "^4.17.1",
+        "mongodb": "3.6.x",
+        "path": "0.11.x"
+    },
+    "preferGlobal": false,
+    "private": true,
+    "license": "MIT"
+}

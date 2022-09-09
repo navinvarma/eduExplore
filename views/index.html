@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="eduExploreApp">
+
+<head>
+   <meta name="viewport" content="width=device-width, initial-scale=1">
+   <title>eduExplore</title>
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+   <link rel="stylesheet" href="/img/custom.min.css">
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular.js"></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.11/angular-route.js"></script>
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.13.0/ui-bootstrap-tpls.min.js"></script>
+   <script src="controller.js"></script>
+</head>
+
+<body>
+   <div class="container-fluid" id="container" ng-controller="eduExploreController" ng-init="searchPrograms()">
+      <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+         <a class="navbar-brand" rel="home" href="/" title="eduExplore">
+            <img class="img-responsive" src="/img/logo-sm.png">
+         </a>
+         <div class="navbar-header pull-left">
+            <ul class="nav navbar-nav">
+               <li class="active"><a href="/">Home</a></li>
+               <li><a href="/universities">Universities</a></li>
+               <li><a href="/about">About</a></li>
+            </ul>
+         </div>
+      </div>
+      <div class="row">
+         <div class="filters col-lg-2 col-md-2 col-sm-2">
+            <h4 class="filterHeader"><span class="glyphicon glyphicon-filter" title="Filters Available"></span>Available
+            </h4>
+            <div id="filtersAvailable" class="filterBody">
+               <form role="form" id="searchForm" class="form">
+                  <div class="form-group">
+                     <label for="isBusinessSchool">B-School?</label>
+                     <input type="checkbox" ng-model="search.isBusinessSchool" name="isBusinessSchool" ng-value-true="0"
+                        ng-value-false="1" ng-change="!search.isBusinessSchool" />
+                  </div>
+                  <div class="form-group">
+                     <label for="programLength">Length (years)</label>
+                     <div class="radio">
+                        <label><input type="radio" ng-model="search.programLength" value="1">
+                           < 1</label>
+                              <label><input type="radio" ng-model="search.programLength" value="1.5">1-2</label>
+                              <label><input type="radio" ng-model="search.programLength" value="2">2+</label>
+                     </div>
+                  </div>
+                  <div class="form-group">
+                     <label for="acceptedExam">Accepts</label>
+                     <div class="radio">
+                        <label><input type="radio" ng-model="search.acceptedExam" value="GRE" />GRE</label>
+                        <label><input type="radio" ng-model="search.acceptedExam" value="GMAT" />GMAT</label>
+                     </div>
+                  </div>
+                  <div class="form-group">
+                     <label for="minScore">Min. Score</label>
+                     <div class="input-group">
+                        <a class="btn-autoclick" ng-click="decrement('score')"><span
+                              class="glyphicon glyphicon-minus"></span></a>
+                        <input type="text" class="xsmall" ng-model="search.score" value="" />
+                        <a class="btn-autoclick" ng-click="increment('score')"><span
+                              class="glyphicon glyphicon-plus"></span></a>
+                     </div>
+                  </div>
+                  <div class="form-group">
+                     <label for="minTOEFL">Min. TOEFL</label>
+                     <div class="input-group">
+                        <a class="btn-autoclick" ng-click="decrement('toeflScore')"><span
+                              class="glyphicon glyphicon-minus"></span></a>
+                        <input type="text" class="xsmall" ng-model="search.toeflScore" value="" />
+                        <a class="btn-autoclick" ng-click="increment('toeflScore')"><span
+                              class="glyphicon glyphicon-plus"></span></a>
+                     </div>
+                  </div>
+                  <div class="form-group">
+                     <label for="gpa">Min. GPA</label>
+                     <div class="radio">
+                        <label><input type="radio" ng-model="search.gpa" value="0">Any</label>
+                        <label><input type="radio" ng-model="search.gpa" value="3">3.0 </label>
+                        <label><input type="radio" ng-model="search.gpa" value="3.5">3.5</label>
+                     </div>
+                  </div>
+                  <div class="form-group">
+                     <label for="minWorkEx">Min. Work Ex</label>
+                     <div class="input-group">
+                        <a class="btn-autoclick" ng-click="decrement('workEx')"><span
+                              class="glyphicon glyphicon-minus"></span></a>
+                        <input type="text" class="xsmall" ng-model="search.workEx" value="" />
+                        <a class="btn-autoclick" ng-click="increment('workEx')"><span
+                              class="glyphicon glyphicon-plus"></span></a>
+                     </div>
+                  </div>
+                  <div class="form-group">
+                     <label for="minFees">Total Tuition ($)</label>
+                     <div class="input-group">
+                        <a class="btn-autoclick" ng-click="decrement('tuition')"><span
+                              class="glyphicon glyphicon-minus"></span></a>
+                        <input type="text" class="xsmall" ng-model="search.tuition" value="" />
+                        <a class="btn-autoclick" ng-click="increment('tuition')"><span
+                              class="glyphicon glyphicon-plus"></span></a>
+                     </div>
+                  </div>
+               </form>
+            </div>
+            <hr>
+            <div id="filtersApplied" class="filterBody">
+               <h4 class="filterHeader"><span class="glyphicon glyphicon-filter" title="Filters Applied"></span>Applied
+               </h4>
+               <div class="form-group">
+                  <div class="currentFilters">
+                     <span class="currentFilter" ng-if="search.isBusinessSchool"><a
+                           ng-click="search.isBusinessSchool = 0;searchPrograms();"><span
+                              class="glyphicon glyphicon-remove"></span></a> B-School</span>
+                     <span class="currentFilter" ng-if="search.programLength"><a
+                           ng-click="search.programLength = 0;searchPrograms();"><span
+                              class="glyphicon glyphicon-remove"></span></a> Length (years)</span>
+                     <span class="currentFilter" ng-if="search.acceptedExam"><a
+                           ng-click="search.acceptedExam = false;searchPrograms();"><span
+                              class="glyphicon glyphicon-remove"></span></a> Accepted Exam</span>
+                     <span class="currentFilter" ng-if="search.score"><a
+                           ng-click="search.score = 0;searchPrograms();"><span
+                              class="glyphicon glyphicon-remove"></span></a> Min. Score</span>
+                     <span class="currentFilter" ng-if="search.toeflScore"><a
+                           ng-click="search.toeflScore = 0;searchPrograms();"><span
+                              class="glyphicon glyphicon-remove"></span></a> Min TOEFL</span>
+                     <span class="currentFilter" ng-if="search.gpa"><a ng-click="search.gpa = 0;searchPrograms();"><span
+                              class="glyphicon glyphicon-remove"></span></a> Min GPA </span>
+                     <span class="currentFilter" ng-if="search.workEx"><a
+                           ng-click="search.workEx = 0;searchPrograms();"><span
+                              class="glyphicon glyphicon-remove"></span></a> Min Work Ex.</span>
+                     <span class="currentFilter" ng-if="search.tuition"><a
+                           ng-click="search.tuition = 0;searchPrograms();"><span
+                              class="glyphicon glyphicon-remove"></span></a> Total Tuition </span>
+                  </div>
+               </div>
+               <div class="btn-toolbar">
+                  <button class="btn btn-primary" ng-click="searchReset()">Clear</button>
+               </div>
+            </div>
+         </div>
+         <div class="col-lg-10 col-md-10 col-sm-10">
+            <h4>Programs</h4>
+            <div id="listPrograms" class="table-responsive">
+               <p>Number of filtered items: {{searchresults.length}}</p>
+
+               <table class="table table-bordered" ng-if="searchresults.length > 0">
+                  <tr>
+                     <th> # </th>
+                     <th width="15%">University</th>
+                     <th width="15%">College</th>
+                     <th width="15%">Degree Title</th>
+                     <th>Length <br />(mo.)</th>
+                     <th>Year</th>
+                     <th>Semester</th>
+                     <th>Tuition Fees</th>
+                     <th>Aid</th>
+                     <th colspan="5" class="text-center">Min. Profile</th>
+                     <th>Action</th>
+                  </tr>
+                  <tr>
+                     <th colspan="9">
+                     <th class="subheader">GPA</th>
+                     <th class="subheader">WorkEx</th>
+                     <th class="subheader">GMAT</th>
+                     <th class="subheader">GRE</th>
+                     <th class="subheader">TOEFL</th>
+                     <th></th>
+                  </tr>
+                  <tr ng-repeat="result in searchresults">
+                     <td>
+                        {{$index+1}}
+                     <td>
+                        <span class="highlight">{{::result.universityName}}</span>
+                     </td>
+                     <td>
+                        <span class="highlight">{{::result.collegeName}}</span> <br /><br />
+                        <span ng-if="result.isBusinessSchool">B-School:<span class="glyphicon glyphicon-ok"
+                              aria-hidden="true"></span> <br />
+                           <span ng-if="result.greAccepted">GRE:<span class="glyphicon glyphicon-ok"
+                                 aria-hidden="true"></span></span> <br />
+                           <span ng-if="result.gmatAccepted">GMAT:<span class="glyphicon glyphicon-ok"
+                                 aria-hidden="true"></span></span><br />
+                           <span ng-if="result.toeflNeeded">TOEFL:<span class="glyphicon glyphicon-ok"
+                                 aria-hidden="true"></span></span><br />
+                           <span ng-if="result.courseEvalReq">Evaluation:<span class="glyphicon glyphicon-ok"
+                                 aria-hidden="true"></span></span>
+                     </td>
+                     <td>
+                        <span class="highlight">{{::result.degreeTitle}}</span> <br />
+                        <a ng-if="result.descriptionURL" href="{{::result.descriptionURL}}"
+                           target="_blank">Description</a> <br />
+                        <a ng-if="result.curriculumURL" href="{{::result.curriculumURL}}" target="_blank">Curriculum</a>
+                        <br />
+                        <a ng-if="result.admissionRequirementsURL" href="{{result.admissionRequirementsURL}}"
+                           target="_blank">Adminssion Requirements</a> <br />
+                        <a ng-if="result.applicationURL" href="{{::result.applicationURL}}"
+                           target="_blank">Application</a> <br />
+                        <a ng-if="result.i20StudentURL" href="{{::result.i20StudentURL}}" target="_blank">International
+                           Students</a>
+                     </td>
+                     <td>{{::result.lengthInMonths}}</td>
+                     <td>{{::result.year}}
+                     </td>
+                     <td>{{::result.semester}}
+                     </td>
+                     <td><span class="orange" ng-if="result.totaltuition">${{::result.totaltuition}}</span></td>
+                     <td><span ng-if="result.providesAid" class="glyphicon glyphicon-ok" aria-hidden="true"></span></td>
+                     <td><span class="orange">{{::result.minGPA}}</span></td>
+                     <td><span class="orange">{{::result.minWorkEx}}</span></td>
+                     <td><span class="orange">{{::result.minGMATScore}}</span></td>
+                     <td><span class="orange">{{::result.minGREScore}}</span></td>
+                     <td><span class="orange">{{::result.minTOEFLScore}}</span></td>
+                     <td><button class="btn btn-sm btn-primary"
+                           ng-click="fetchProgram(result.universityId,result._id,true)">View</button></td>
+                  </tr>
+               </table>
+            </div>
+         </div>
+      </div>
+      <!--div.row-->
+   </div>
+   <div class="footer">
+      Developed by <a target="_blank" href="https://www.nvarma.com">Navin Varma</a>
+   </div>
+</body>
+
+</html>
